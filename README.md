@@ -1,4 +1,4 @@
-Windows 10 in virtual machine on Linux host with GPU passthrough for the integrated graphics intel Core CPUs gen. 5-9
+Windows 10 in virtual machine on Linux host with GPU passthrough for the integrated graphics of intel Core CPUs gen. 5-9
 =======================================================
 
 This guide shows how to install Windows 10 in a virtual machine with hardware-accelerated graphics via iGPU passthrough. 
