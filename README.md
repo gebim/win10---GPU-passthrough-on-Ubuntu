@@ -72,11 +72,14 @@ and browse for the image of win10.iso
 ![](2.png)
 
 ![](3.png)
+
 ![](4.png)
 
 step 4 will create in `/var/lib/libvirt/images/win10-2.qcow2` a file of 40GB and this represents the virtual disc space of win10 guest. It is arguably a good idea to define a 'custom storage' place that is not in the root partition.
 1. Ready to begin with the win10 installation:
+   
 ![](5.png)
+
 Don´t forget to tick on 'customize configuration before install'. This brings us to all settings:
 ![](6.png)
 In the overview, we need to select UEFI as boot firmware. Under CPU we select 'copy host CPU selection'
