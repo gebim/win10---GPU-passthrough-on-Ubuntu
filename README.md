@@ -67,31 +67,43 @@ Note: I had some missing dependencies. Just install the missing libs with the co
 1. Now the Linux host is ready and we can do the installation of Windows in the virtual machine.
 
 Open `virt-manger` and select the left top button 'create a new virtual machine'.
+
 ![](1.png)
+
 and browse for the image of win10.iso
+
 ![](2.png)
 
 ![](3.png)
 
 ![](4.png)
 
-step 4 will create in `/var/lib/libvirt/images/win10-2.qcow2` a file of 40GB and this represents the virtual disc space of win10 guest. It is arguably a good idea to define a 'custom storage' place that is not in the root partition.
+step 4 creates in `/var/lib/libvirt/images/win10-2.qcow2` a file of 40GB. This represents the virtual disc space of win10 guest. It is arguably a good idea to define a 'custom storage' place that is not in the root partition.
 1. Ready to begin with the win10 installation:
    
 ![](5.png)
 
 Don´t forget to tick on 'customize configuration before install'. This brings us to all settings:
+
 ![](6.png)
+
 In the overview, we need to select UEFI as boot firmware. Under CPU we select 'copy host CPU selection'
+
 ![](7.png)
+
 here with 1 socket, 4 cores (4 remain for the host), and 2 threads. For the memory let's take half of the available.
+
 ![](8.png)
+
 Under 'Boot Options' select an additional 'cdrom 1' to mount the win10.iso.
+
 ![](9.png)
 
 Now we are ready to fire up the VM. 
-Press quickly F2 to enter the UEFI and under 'Device manager  / secure boot configuration' disable 'Attempt Secure Boot' 
+Press quickly F2 to enter the UEFI and under 'Device manager  / secure boot configuration' disable 'Attempt Secure Boot'
+
 ![](10.png)
+
 Save and exit the UEFI. -> The installation of win10 starts. After the win10 installation perform an update and reboot the win10 guest.
 
 Note: Every Win10 should work but must be 64-bit. Some people recommend Win10 LTSC, due to the more predictable updates and longer support.
@@ -111,7 +123,9 @@ In the `<\devices>` section we have to add:
      <size unit='M'>32</size>
     </shmem>
 32M memory should be enough for 1080p. See looking-glass documentation for the details.
+
 ![](11.png)
+
 Start virt-manager and in the VM details, press the button 'add hardware' and select in the new window 'MDEV Host Device'. This is the passthrough GPU. Alternatively (as in the video) you can manually add the XML. In the 'Ubuntu_GVT-g_helper-master' directory is a generated file called `virsh.txt` with the content.
 
 ![](12.png)
@@ -119,7 +133,9 @@ Start virt-manager and in the VM details, press the button 'add hardware' and se
 Start the win10 VM. Install looking glass as admin.
 
 Open the device manager. Under 'Display adapter' we finally see the host Intel-GPU:
+
 ![](13.png)
+
 Big smile now - Win10 sees the host GPU!
 
 Note: you may have to manually trigger an update of the display adapter and/or do a restart of the VM.
