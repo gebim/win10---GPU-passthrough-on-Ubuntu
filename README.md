@@ -24,22 +24,22 @@ The iGPU passthrough passthrough uses software-based GVT-g. This is supported by
 ### Installation
 
 1. Check if your intel CPU if is gen 5-9: `cat /proc/cpuinfo`
-1. Check if KVM is supported: `kvm-ok`
-1. In the UEFI/BIOS settings there must VT-x, IOMMU, SR-IOV enabled. In many UEFI not all settings are available but if VT-x is enabled, this should be ok.
-1. Download  Pavolelsigs helper scripts:
+2. . Check if KVM is supported: `kvm-ok`
+3. . In the UEFI/BIOS settings there must VT-x, IOMMU, SR-IOV enabled. In many UEFI not all settings are available but if VT-x is enabled, this should be ok.
+4. . Download  Pavolelsigs helper scripts:
 < https://github.com/pavolelsig/Ubuntu_GVT-g_helper>.
-1. Download looking glass:
+5. Download looking glass:
  <https://looking-glass.io/downloads>
-1. Unpack the zip files and put them into one directory:
-
-	user_name@pc:~/priv/virtualization$ ls
-	looking-glass-B6 Ubuntu_GVT-g_helper-master
-1. `cd`into `Ubuntu_GVT-g_helper-master` and make `part_1.sh` excetutable: `chmod +x part_1.sh`
-1. Run `part_1.sh` as root: `sudo ./part_1.sh`
+6. Unpack the zip files and put them into one directory:
+   ```user_name@pc:~/priv/virtualization$ ls
+      looking-glass-B6 Ubuntu_GVT-g_helper-master
+   ```
+7. `cd`into `Ubuntu_GVT-g_helper-master` and make `part_1.sh` excetutable: `chmod +x part_1.sh`
+8. Run `part_1.sh` as root: `sudo ./part_1.sh`
 Note: `part_1.sh` is adding to `grub` the boot options `intel_iommu=on kvm.ignore_msrs=1 i915.enable_gvt=1`, it adds kernel modules, installs the dependencies to compile `looking glass`, sets permissions, and installs the virtualization SW `qemu` with the frontend `virt-manager`.		
 At the end, it prompts a safety question if the boot options are OK.
-1. Reboot the Linux host.
-1. Enter `Ubuntu_GVT-g_helper-master` and run `part_2.sh` as root: `sudo ./part_2.sh`
+9. Reboot the Linux host.
+10. Enter `Ubuntu_GVT-g_helper-master` and run `part_2.sh` as root: `sudo ./part_2.sh`
 Note: `part_2.sh` does the 'heavy loading' of the installation. It finds the right Intel VGPU, sets user permissions, and creates a `systemd` service to initialize the VGPU during startup. Cool!
 `part_2.sh` also creates `check_gpu.sh`. Run it `./check_gpu.sh` and you should see a long number like: `69763959-1724-46a3-8878-860096be8669`. This is the uuid of the VGPU. If you see such a long number, everything should be fine. The properties of the VGPUs (yes, there are more than one) can be seen in the `/sys/devices/pci*` directories. On my machine, the used VGPU is in `/sys/devices/pci0000:00/0000:00:02.0/mdev_supported_types/i915-GVTg_V5_4/description`. The contents of this file is:
    ```
@@ -49,9 +49,8 @@ Note: `part_2.sh` does the 'heavy loading' of the installation. It finds the rig
    resolution: 1920x1200
    weight: 4
    ```
-1. Compile looking-glass from source.
-Change the directory into `looking-glass-B6/` and create a build directory: `mkdir client/build`. Enter this directory: `cd client/build/` and do a `cmake ../` and `make`
-A successful compilation looks like this:
+11. Compile looking-glass from source. Change the directory into `looking-glass-B6/` and create a build directory: `mkdir client/build`. Enter this directory: `cd client/build/` and do a `cmake ../` and `make`.
+12. A successful compilation looks like this:
     ```
     [100%] Linking CXX executable looking-glass-client
     [100%] Built target looking-glass-client
@@ -59,7 +58,7 @@ A successful compilation looks like this:
 and the executable is: `looking-glass-client`
 Note: I had some missing dependencies. Just install the missing libs with the corresponding development files `.dev`
 
-1. Now the Linux host is ready and we can do the installation of Windows in the virtual machine.
+13. Now the Linux host is ready and we can do the installation of Windows in the virtual machine.
 Open `virt-manger` and select the left top button 'create a new virtual machine'.
 
 ![](1.png)
@@ -73,7 +72,7 @@ and browse for the image of win10.iso
 ![](4.png)
 
 step 4 creates in `/var/lib/libvirt/images/win10-2.qcow2` a file of 40GB. This represents the virtual disc space of win10 guest. It is arguably a good idea to define a 'custom storage' place that is not in the root partition.
-1. Ready to begin with the win10 installation:
+14. Begin with the win10 installation:
    
 ![](5.png)
 
@@ -93,7 +92,7 @@ Under 'Boot Options' select an additional 'cdrom 1' to mount the win10.iso.
 
 ![](9.png)
 
-Now we are ready to fire up the VM. 
+15. Fire up the VM. 
 Press quickly F2 to enter the UEFI and under 'Device manager  / secure boot configuration' disable 'Attempt Secure Boot'
 
 ![](10.png)
@@ -102,7 +101,7 @@ Save and exit the UEFI. -> The installation of win10 starts. After the win10 ins
 
 Note: Every Win10 should work but must be 64-bit. Some people recommend Win10 LTSC, due to the more predictable updates and longer support.
   
-1. Under win10, download looking-glass from <https://looking-glass.io/downloads>. Use the same version as for the Linux host (at the time of writing: B6). Shutdown win10.
+16. Under win10, download looking-glass from <https://looking-glass.io/downloads>. Use the same version as for the Linux host (at the time of writing: B6). Shutdown win10.
 
 Note: there is a difference to the video of Pavolelsigs video (at 13:40). We don't need to download/install 'iommu' as this is now a part of looking-glass.
 
@@ -142,4 +141,4 @@ Looking glass has many options. Here we use `-F` for fullscreen, `F9` to capture
 On the win10 guest, it is recommended to install SPICE guest tools from <https://www.spice-space.org/download.html#windows-binaries>. See looking glass FAQ.
 The newest version (B6) also does not require the installation of additional components for audio as it now supports audio transport via the SPICE protocol and on the host pulseaudio/pipewire output.
 
-IMHO: the graphics performance is very good. Close to bare metal. Such a great pice of software.
+IMHO: the graphics performance is very good. Close to bare metal. Such a great piece of software.
