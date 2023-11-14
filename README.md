@@ -42,25 +42,24 @@ At the end, it prompts a safety question if the boot options are OK.
 1. Enter `Ubuntu_GVT-g_helper-master` and run `part_2.sh` as root: `sudo ./part_2.sh`
 Note: `part_2.sh` does the 'heavy loading' of the installation. It finds the right Intel VGPU, sets user permissions, and creates a `systemd` service to initialize the VGPU during startup. Cool!
 `part_2.sh` also creates `check_gpu.sh`. Run it `./check_gpu.sh` and you should see a long number like: `69763959-1724-46a3-8878-860096be8669`. This is the uuid of the VGPU. If you see such a long number, everything should be fine. The properties of the VGPUs (yes, there are more than one) can be seen in the `/sys/devices/pci*` directories. On my machine, the used VGPU is in `/sys/devices/pci0000:00/0000:00:02.0/mdev_supported_types/i915-GVTg_V5_4/description`. The contents of this file is:
-  
-	low_gm_size: 128MB
-	high_gm_size: 512MB
-	fence: 4
-	resolution: 1920x1200
-	weight: 4
-
+   ```
+   low_gm_size: 128MB
+   high_gm_size: 512MB
+   fence: 4
+   resolution: 1920x1200
+   weight: 4
+   ```
 1. Compile looking-glass from source.
 Change the directory into `looking-glass-B6/` and create a build directory: `mkdir client/build`. Enter this directory: `cd client/build/` and do a `cmake ../` and `make`
-
-A successful compilation looks like this: 
-
-	[100%] Linking CXX executable looking-glass-client
-	[100%] Built target looking-glass-client
+A successful compilation looks like this:
+    ```
+    [100%] Linking CXX executable looking-glass-client
+    [100%] Built target looking-glass-client
+    ```
 and the executable is: `looking-glass-client`
-
 Note: I had some missing dependencies. Just install the missing libs with the corresponding development files `.dev`
-1. Now the Linux host is ready and we can do the installation of Windows in the virtual machine.
 
+1. Now the Linux host is ready and we can do the installation of Windows in the virtual machine.
 Open `virt-manger` and select the left top button 'create a new virtual machine'.
 
 ![](1.png)
