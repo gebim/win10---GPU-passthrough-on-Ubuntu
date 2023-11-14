@@ -145,5 +145,6 @@ Shutdown the VM. Go into virtmanger and set 'Video' to none:
 
 Start the win10 VM. Enter the directory of the looking-glass client and start it: `./looking-glass-client -F -m KEY_F9 -c`.
 Looking glass has many options. Here we use `-F` for fullscreen, `F9` to capture the mouse in the VM and `-c` for a shared clipboard. As second time `F9` brings the mouse to the host back.
+On the win10 guest, it is recommended to install SPICE guest tools from <https://www.spice-space.org/download.html#windows-binaries>. See looking glass FAQ.
 
-IMHO: the graphics performance is very good. Close to bare-metal. At the moment we just have a basic VM configuration. For better network performance we can install the virtio drivers and for the sound: spice pass-through.  
+IMHO: the graphics performance is very good. Close to bare metal. 
