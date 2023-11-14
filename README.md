@@ -30,14 +30,10 @@ The iGPU passthrough passthrough uses software-based GVT-g. This is supported by
 < https://github.com/pavolelsig/Ubuntu_GVT-g_helper>.
 1. Download looking glass:
  <https://looking-glass.io/downloads>
-1. (Optional) for sound passthrough:
- <https://github.com/duncanthrax/scream> 
 1. Unpack the zip files and put them into one directory:
 
 	user_name@pc:~/priv/virtualization$ ls
-	looking-glass-B6  scream-master  Ubuntu_GVT-g_helper-master
-1. Move `scream-master` into the `Ubuntu_GVT-g_helper-master` directory: `mv scream-master/ Ubuntu_GVT-g_helper-master/`
-
+	looking-glass-B6 Ubuntu_GVT-g_helper-master
 1. `cd`into `Ubuntu_GVT-g_helper-master` and make `part_1.sh` excetutable: `chmod +x part_1.sh`
 1. Run `part_1.sh` as root: `sudo ./part_1.sh`
 Note: `part_1.sh` is adding to `grub` the boot options `intel_iommu=on kvm.ignore_msrs=1 i915.enable_gvt=1`, it adds kernel modules, installs the dependencies to compile `looking glass`, sets permissions, and installs the virtualization SW `qemu` with the frontend `virt-manager`.		
@@ -45,15 +41,14 @@ At the end, it prompts a safety question if the boot options are OK.
 1. Reboot the Linux host.
 1. Enter `Ubuntu_GVT-g_helper-master` and run `part_2.sh` as root: `sudo ./part_2.sh`
 Note: `part_2.sh` does the 'heavy loading' of the installation. It finds the right Intel VGPU, sets user permissions, and creates a `systemd` service to initialize the VGPU during startup. Cool!
-`part_2.sh` also creates `check_gpu.sh`. Run it `./check_gpu.sh` and you should see a long number like: `69763959-1724-46a3-8878-860096be8669`. This is the uuid of the VGPU. If you see such a long number, everything should be fine.
-Note: the properties of the VGPUs (yes, there are more than one) can be seen in the `/sys/devices/pci*` directories. On my machine, the used VGPU is in `/sys/devices/pci0000:00/0000:00:02.0/mdev_supported_types/i915-GVTg_V5_4/description`. The contents of this file is:
+`part_2.sh` also creates `check_gpu.sh`. Run it `./check_gpu.sh` and you should see a long number like: `69763959-1724-46a3-8878-860096be8669`. This is the uuid of the VGPU. If you see such a long number, everything should be fine. The properties of the VGPUs (yes, there are more than one) can be seen in the `/sys/devices/pci*` directories. On my machine, the used VGPU is in `/sys/devices/pci0000:00/0000:00:02.0/mdev_supported_types/i915-GVTg_V5_4/description`. The contents of this file is:
   
 	low_gm_size: 128MB
 	high_gm_size: 512MB
 	fence: 4
 	resolution: 1920x1200
 	weight: 4
-1. Optional: run `sudo ./part_3_optional.sh`. This compiles scream for the sound and adds an auto-start service for gnome.
+
 1. Compile looking-glass from source.
 Change the directory into `looking-glass-B6/` and create a build directory: `mkdir client/build`. Enter this directory: `cd client/build/` and do a `cmake ../` and `make`
 
