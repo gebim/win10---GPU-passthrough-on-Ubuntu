@@ -24,9 +24,9 @@ The iGPU passthrough passthrough uses software-based GVT-g. This is supported by
 ### Installation
 
 1. Check if your intel CPU if is gen 5-9: `cat /proc/cpuinfo`
-2. . Check if KVM is supported: `kvm-ok`
-3. . In the UEFI/BIOS settings there must VT-x, IOMMU, SR-IOV enabled. In many UEFI not all settings are available but if VT-x is enabled, this should be ok.
-4. . Download  Pavolelsigs helper scripts:
+2. Check if KVM is supported: `kvm-ok`
+3. In the UEFI/BIOS settings there must VT-x, IOMMU, SR-IOV enabled. In many UEFI not all settings are available but if VT-x is enabled, this should be ok.
+4. Download  Pavolelsigs helper scripts:
 < https://github.com/pavolelsig/Ubuntu_GVT-g_helper>.
 5. Download looking glass:
  <https://looking-glass.io/downloads>
@@ -72,6 +72,7 @@ and browse for the image of win10.iso
 ![](4.png)
 
 step 4 creates in `/var/lib/libvirt/images/win10-2.qcow2` a file of 40GB. This represents the virtual disc space of win10 guest. It is arguably a good idea to define a 'custom storage' place that is not in the root partition.
+
 14. Begin with the win10 installation:
    
 ![](5.png)
@@ -136,8 +137,8 @@ Note: you may have to manually trigger an update of the display adapter and/or d
 Shutdown the VM. Go into virtmanger and set 'Video' to none:
 ![](14.png)
 
-Start the win10 VM. Enter the directory of the looking-glass client and start it: `./looking-glass-client -F -m KEY_F9 -c`.
-Looking glass has many options. Here we use `-F` for fullscreen, `F9` to capture the mouse in the VM and `-c` for a shared clipboard. As second time `F9` brings the mouse to the host back.
+Start the win10 VM. Enter the directory of the looking-glass client and start it: `./looking-glass-client -F -m KEY_F9`.
+Looking glass has many options. Here we use `-F` for fullscreen, `F9` to capture the mouse in the VM. As second time `F9` brings the mouse to the host back.
 On the win10 guest, it is recommended to install SPICE guest tools from <https://www.spice-space.org/download.html#windows-binaries>. See looking glass FAQ.
 The newest version (B6) also does not require the installation of additional components for audio as it now supports audio transport via the SPICE protocol and on the host pulseaudio/pipewire output.
 
